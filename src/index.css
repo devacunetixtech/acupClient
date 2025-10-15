@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Reem+Kufi&display=swap');
+@import "tailwindcss";
+
+
+@layer base {
+  @font-face {
+    font-family: 'Armin Grotesk';
+    src: url('/fonts/ArminGrotesk-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+  }
+  @font-face {
+    font-family: 'Armin Grotesk';
+    src: url('/fonts/ArminGrotesk-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Armin Grotesk', sans-serif;
+    padding: 0;
+  }
+}
