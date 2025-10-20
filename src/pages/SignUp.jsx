@@ -2,90 +2,149 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../context/Authcontext';
+import { Eye, EyeOff, User, Mail, Lock, Phone, Zap } from 'lucide-react';
 
 const SignUp = () => {
     const { registerInfo, updateRegisterInfo, registerUser, registerError, isRegisterLoading } = useContext(AuthContext) || {};
+    const [showPassword, setShowPassword] = useState(false);
 
     return (
-        <div className="flex h-[700px] w-full">
-            <div className="w-full hidden md:inline-block">
-                <img className="h-full" src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/leftSideImage.png" alt="leftSideImage" />
-            </div>
-
-            <div className="w-full flex flex-col items-center justify-center">
-
-                <form onSubmit={registerUser} className="md:w-96 w-80 flex flex-col items-center justify-center">
-                    <h2 className="text-4xl text-gray-900 font-medium">Sign up</h2>
-                    <p className="text-sm text-gray-500/90 mt-3">Welcome! Please sign up to get started</p>
-
-                    <button type="button" className="w-full mt-8 bg-gray-500/10 flex items-center justify-center h-12 rounded-full">
-                        <img src="https://raw.githubusercontent.com/prebuiltui/prebuiltui/main/assets/login/googleLogo.svg" alt="googleLogo" />
-                    </button>
-
-                    <div className="flex items-center gap-4 w-full my-5">
-                        <div className="w-full h-px bg-gray-300/90"></div>
-                        <p className="w-full text-nowrap text-sm text-gray-500/90">or sign up with email</p>
-                        <div className="w-full h-px bg-gray-300/90"></div>
-                    </div>
-
-                    <div className="flex items-center w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
-                        <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M0 .55.571 0H15.43l.57.55v9.9l-.571.55H.57L0 10.45zm1.143 1.138V9.9h13.714V1.69l-6.503 4.8h-.697zM13.749 1.1H2.25L8 5.356z" fill="#6B7280" />
-                        </svg>
-                        <input type="name" placeholder="Fullname" className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full" required
-                            onChange={(e) => updateRegisterInfo({ ...registerInfo, name: e.target.value })} />
-                    </div>
-                    <div className="flex items-center mt-5 w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
-                        <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M0 .55.571 0H15.43l.57.55v9.9l-.571.55H.57L0 10.45zm1.143 1.138V9.9h13.714V1.69l-6.503 4.8h-.697zM13.749 1.1H2.25L8 5.356z" fill="#6B7280" />
-                        </svg>
-                        <input type="text" placeholder="Email id" className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full" required
-                            onChange={(e) => updateRegisterInfo({ ...registerInfo, email: e.target.value })}
-                        />
-                    </div>
-                    <div className="flex items-center mt-5 w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
-                        <svg width="13" height="17" viewBox="0 0 13 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M13 8.5c0-.938-.729-1.7-1.625-1.7h-.812V4.25C10.563 1.907 8.74 0 6.5 0S2.438 1.907 2.438 4.25V6.8h-.813C.729 6.8 0 7.562 0 8.5v6.8c0 .938.729 1.7 1.625 1.7h9.75c.896 0 1.625-.762 1.625-1.7zM4.063 4.25c0-1.406 1.093-2.55 2.437-2.55s2.438 1.144 2.438 2.55V6.8H4.061z" fill="#6B7280" />
-                        </svg>
-                        <input type="password" placeholder="Password" className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full" required
-                            onChange={(e) => updateRegisterInfo({ ...registerInfo, password: e.target.value })}
-                        />
-                    </div>
-                    <div className="flex items-center mt-5 w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
-                        <svg width="16" height="11" viewBox="0 0 16 11" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path fillRule="evenodd" clipRule="evenodd" d="M0 .55.571 0H15.43l.57.55v9.9l-.571.55H.57L0 10.45zm1.143 1.138V9.9h13.714V1.69l-6.503 4.8h-.697zM13.749 1.1H2.25L8 5.356z" fill="#6B7280" />
-                        </svg>
-                        <input type="number" placeholder="Phone Number" className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full" required
-                            onChange={(e) => updateRegisterInfo({ ...registerInfo, phoneNo: e.target.value })}
-                        />
-                    </div>
-
-                    {/* <div className="flex items-center mt-5 w-full bg-transparent border border-gray-300/60 h-12 rounded-full overflow-hidden pl-6 gap-2">
-                        <svg width="13" height="17" viewBox="0 0 13 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M13 8.5c0-.938-.729-1.7-1.625-1.7h-.812V4.25C10.563 1.907 8.74 0 6.5 0S2.438 1.907 2.438 4.25V6.8h-.813C.729 6.8 0 7.562 0 8.5v6.8c0 .938.729 1.7 1.625 1.7h9.75c.896 0 1.625-.762 1.625-1.7zM4.063 4.25c0-1.406 1.093-2.55 2.437-2.55s2.438 1.144 2.438 2.55V6.8H4.061z" fill="#6B7280" />
-                        </svg>
-                        <input type="confirm-password" placeholder="Confirm Password" className="bg-transparent text-gray-500/80 placeholder-gray-500/80 outline-none text-sm w-full h-full" required />
-                    </div> */}
-                    <div className="w-full flex items-center justify-between mt-8 text-gray-500/80">
-                        <div className="flex items-center gap-2">
-                            <input className="h-5" type="checkbox" id="checkbox" />
-                            <label className="text-sm" htmlFor="checkbox">Remember me</label>
-                        </div>
-                        <a className="text-sm underline" href="#">Suggest password?</a>
-                    </div>
-
-                    <button type="submit" className="mt-8 w-full h-11 rounded-full text-white bg-indigo-500 hover:opacity-90 transition-opacity">
-                        {isRegisterLoading ? "Creating" : "Create Account"}
-                    </button>
-                    <p className="text-gray-500/90 text-sm mt-4">Have an account?
-                        <Link to='/signin' className="text-[#F48352] text-indigo-400 hover:underline">Sign in</Link>
-                    </p>
-                </form>
-                {
-                    registerError?.error && (
-                        <div>{registerError?.message}</div>
-                    )
+        <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-cyan-100 flex items-center justify-center p-4 relative overflow-hidden">
+            {/* Animated blobs */}
+            <div className="absolute top-0 left-0 w-72 h-72 bg-cyan-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+            <div className="absolute top-0 right-0 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+            <div className="absolute bottom-0 left-1/2 w-72 h-72 bg-cyan-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+            
+            <style>{`
+                @keyframes blob {
+                    0%, 100% { transform: translate(0, 0) scale(1); }
+                    25% { transform: translate(20px, -50px) scale(1.1); }
+                    50% { transform: translate(-20px, 20px) scale(0.9); }
+                    75% { transform: translate(50px, 50px) scale(1.05); }
                 }
+                .animate-blob {
+                    animation: blob 7s infinite;
+                }
+                .animation-delay-2000 {
+                    animation-delay: 2s;
+                }
+                .animation-delay-4000 {
+                    animation-delay: 4s;
+                }
+            `}</style>
+
+            <div className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl w-full max-w-md p-8 relative z-10 border border-cyan-200">
+                <div className="text-center mb-5">
+                    <div className="w-20 h-20 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg transform hover:rotate-6 transition-transform">
+                        <Zap className="w-10 h-10 text-white" />
+                    </div>
+                    <h1 className="text-4xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Join ACUPAY</h1>
+                    <p className="text-gray-600 mt-2">Create your account in seconds</p>
+                </div>
+
+                <form onSubmit={registerUser} className="space-y-5">
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Full Name</label>
+                        <div className="relative group">
+                            <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-cyan-500 group-focus-within:scale-110 transition-transform" />
+                            <input
+                                type="text"
+                                placeholder="John Doe"
+                                className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all bg-white"
+                                required
+                                onChange={(e) => updateRegisterInfo({ ...registerInfo, name: e.target.value })}
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Email Address</label>
+                        <div className="relative group">
+                            <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-cyan-500 group-focus-within:scale-110 transition-transform" />
+                            <input
+                                type="email"
+                                placeholder="john@example.com"
+                                className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all bg-white"
+                                required
+                                onChange={(e) => updateRegisterInfo({ ...registerInfo, email: e.target.value })}
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Phone Number</label>
+                        <div className="relative group">
+                            <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-cyan-500 group-focus-within:scale-110 transition-transform" />
+                            <input
+                                type="number"
+                                placeholder="+234 800 123 4567"
+                                className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all bg-white"
+                                required
+                                onChange={(e) => updateRegisterInfo({ ...registerInfo, phoneNo: e.target.value })}
+                            />
+                        </div>
+                    </div>
+
+                    <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-2">Password</label>
+                        <div className="relative group">
+                            <Lock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-cyan-500 group-focus-within:scale-110 transition-transform" />
+                            <input
+                                type={showPassword ? 'text' : 'password'}
+                                placeholder="••••••••"
+                                className="w-full pl-12 pr-12 py-3.5 border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all bg-white"
+                                required
+                                onChange={(e) => updateRegisterInfo({ ...registerInfo, password: e.target.value })}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-1/2 transform -translate-y-1/2 hover:scale-110 transition-transform"
+                            >
+                                {showPassword ? <EyeOff className="w-5 h-5 text-gray-400" /> : <Eye className="w-5 h-5 text-gray-400" />}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                        <label className="flex items-center cursor-pointer group">
+                            <input type="checkbox" className="w-4 h-4 text-cyan-500 border-gray-300 rounded focus:ring-cyan-500 cursor-pointer" />
+                            <span className="ml-2 text-sm text-gray-600 group-hover:text-gray-800">Remember me</span>
+                        </label>
+                        <a href="#" className="text-sm text-cyan-600 font-semibold hover:underline">
+                            Suggest password?
+                        </a>
+                    </div>
+
+                    {registerError?.error && (
+                        <div className="bg-red-50 border-2 border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm font-medium">
+                            {registerError?.message}
+                        </div>
+                    )}
+
+                    <button
+                        type="submit"
+                        disabled={isRegisterLoading}
+                        className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-4 rounded-xl font-bold hover:shadow-2xl hover:shadow-cyan-500/50 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    >
+                        {isRegisterLoading ? (
+                            <span className="flex items-center justify-center space-x-2">
+                                <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                                <span>Creating Account...</span>
+                            </span>
+                        ) : "Create Account"}
+                    </button>
+                </form>
+
+                <p className="text-center mt-6 text-gray-600">
+                    Already have an account?{' '}
+                    <Link to='/signin' className="text-cyan-600 font-bold hover:underline">
+                        Sign In
+                    </Link>
+                </p>
             </div>
         </div>
     );

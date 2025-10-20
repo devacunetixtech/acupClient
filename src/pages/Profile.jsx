@@ -1,14 +1,17 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { AuthContext } from "../context/Authcontext";
-import logo from "../assets/nobgwhitelogo.png";
+import { Home, Send, Clock, User, LogOut, Menu, X, Zap, Settings, Shield, Lock, Mail, Phone, CreditCard, ArrowUpRight } from "lucide-react";
+import logo from "../assets/acunetix.png";
 
 function Profile() {
-  const { user, setUser, pin, setPin: setPinState, setPinApi } = useContext(AuthContext);
+  const { user, setUser, pin, setPin: setPinState, setPinApi, logoutUser } = useContext(AuthContext);
   const [error, setError] = useState(null);
   const [confirmPin, setConfirmPin] = useState("");
   const [message, setMessage] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+    const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
 
   // Refs for PIN and Confirm PIN inputs
@@ -109,101 +112,278 @@ function Profile() {
   };
 
   if (!user) {
-    return <div className="text-center text-gray-500">Loading...</div>;
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-cyan-100 flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600 font-medium">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
     return (
-      <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md text-center text-red-700">
-        {error}
+      <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-cyan-100 flex items-center justify-center p-4">
+        <div className="bg-red-50 border-2 border-red-200 text-red-700 px-6 py-4 rounded-xl max-w-md text-center">
+          {error}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-md mx-auto p-6 bg-white rounded-lg shadow-md">
-      {/* Back to Dashboard Button */}
-      <button
-        onClick={() => navigate("/dashboard")}
-        className="mb-4 bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700"
-      >
-        Back to Dashboard
-      </button>
+    <div className="flex min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-cyan-100">
+      {/* Sidebar */}
+      <div className={`fixed lg:static inset-y-0 left-0 z-50 w-64 bg-gradient-to-b from-cyan-600 to-blue-600 text-white transform ${isOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 transition-transform duration-300 shadow-2xl`}>
+        <div className="p-6 h-full flex flex-col">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center space-x-3">
+              <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg transform hover:rotate-12 transition-transform">
+                <Zap className="w-7 h-7 text-cyan-600" />
+              </div>
+              <span className="text-2xl font-bold">ACUPAY</span>
+            </div>
+            <button onClick={() => setIsOpen(false)} className="lg:hidden hover:bg-white/20 p-2 rounded-lg transition">
+              <X className="w-6 h-6" />
+            </button>
+          </div>
 
-      <header className="px-2 py-4 flex flex-col justify-center items-center text-center">
-        <img
-          className="inline-flex object-cover border-4 border-indigo-600 rounded-full shadow-[5px_5px_0_0_rgba(0,0,0,1)] shadow-indigo-600/100 bg-indigo-50 text-indigo-600 h-24 w-24 !h-48 !w-48"
-          src={logo}
-          alt="Profile"
-          onError={(e) =>
-            (e.target.src =
-              "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080")
-          }
-        />
-        <h1 className="text-2xl text-gray-500 font-bold mt-2">{user.name || "Unknown User"}</h1>
-        <h2 className="text-xl text-gray-500 font-bold mt-1">{user.email || "No email provided"}</h2>
-        <h3 className="text-base text-gray-500 font-bold">
-          Account Number: {user.accountNumber || "No account number provided"}
-        </h3>
-      </header>
+          <nav className="space-y-2 flex-1">
+            <Link
+              to="/dashboard"
+              className="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl transition-all transform hover:scale-105 hover:bg-white/20"
+            >
+              <Home className="w-5 h-5" />
+              <span className="font-semibold">Dashboard</span>
+            </Link>
+            <Link
+              to="/transfer"
+              className="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl transition-all transform hover:scale-105 hover:bg-white/20"
+            >
+              <Send className="w-5 h-5" />
+              <span className="font-semibold">Transfer</span>
+            </Link>
+            <Link
+              to="/transactionHistory"
+              className="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl transition-all transform hover:scale-105 hover:bg-white/20"
+            >
+              <Clock className="w-5 h-5" />
+              <span className="font-semibold">Transactions</span>
+            </Link>
+            <Link
+              to="/profile"
+              className="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl transition-all transform hover:scale-105 bg-white text-cyan-600 shadow-lg"
+            >
+              <User className="w-5 h-5" />
+              <span className="font-semibold">Profile</span>
+            </Link>
+          </nav>
 
-      {/* Message Display */}
-      {message && (
-        <div
-          className={`p-2 mb-4 text-sm rounded ${
-            message.type === "success" ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700"
-          }`}
-        >
-          {message.text}
+          <button
+            // onClick={() => navigate("/signin")}
+            onClick={() => setShowModal(true)}
+            className="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl hover:bg-white/20 transition-all transform hover:scale-105 mt-4"
+          >
+            <LogOut className="w-5 h-5" />
+            <span className="font-semibold">Logout</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Main Content */}
+      <div className="flex-1">
+        {/* Header */}
+        <header className="bg-white/90 backdrop-blur-lg shadow-lg border-b border-cyan-200">
+          <div className="flex items-center justify-between px-4 md:px-6 py-4">
+            <button onClick={() => setIsOpen(true)} className="lg:hidden hover:bg-gray-100 p-2 rounded-lg transition">
+              <Menu className="w-6 h-6" />
+            </button>
+            <h1 className="text-2xl md:text-3xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">My Profile</h1>
+            <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+              <User className="w-6 h-6 text-white" />
+            </div>
+          </div>
+        </header>
+
+        <main className="p-4 md:p-6">
+          <div className="max-w-3xl mx-auto">
+            {/* Profile Card */}
+            <div className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-6 md:p-8 mb-6 border border-cyan-200">
+              <div className="flex flex-col items-center text-center mb-8">
+                <div className="relative group mb-6">
+                  <div className="w-28 h-28 md:w-32 md:h-32 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center shadow-xl transform group-hover:rotate-6 transition-all overflow-hidden border-4 border-white">
+                    <img
+                      src={logo}
+                      alt="Profile"
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                        e.target.parentElement.innerHTML = '<svg class="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>';
+                      }}
+                    />
+                  </div>
+                  <button className="absolute -bottom-2 -right-2 w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg hover:scale-110 transition-transform">
+                    <Settings className="w-5 h-5 text-white" />
+                  </button>
+                </div>
+                
+                <h2 className="text-3xl font-bold text-gray-800 mb-2">{user.name || "Unknown User"}</h2>
+                <p className="text-gray-500 mb-4">{user.email || "No email provided"}</p>
+                
+                <div className="flex items-center space-x-2 justify-center">
+                  <span className="px-4 py-1 bg-gradient-to-r from-green-100 to-emerald-100 text-green-700 rounded-full text-sm font-bold">Verified</span>
+                  <span className="px-4 py-1 bg-gradient-to-r from-cyan-100 to-blue-100 text-cyan-700 rounded-full text-sm font-bold">Premium</span>
+                </div>
+              </div>
+
+              {/* Account Details */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <div className="bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl p-4 border border-cyan-200">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center">
+                      <Mail className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-sm text-gray-600 font-medium">Email</span>
+                  </div>
+                  <p className="text-gray-800 font-bold text-sm ml-13">{user.email || "N/A"}</p>
+                </div>
+
+                <div className="bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl p-4 border border-cyan-200">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center">
+                      <Phone className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-sm text-gray-600 font-medium">Phone</span>
+                  </div>
+                  <p className="text-gray-800 font-bold text-sm ml-13">{user.phoneNo || "N/A"}</p>
+                </div>
+
+                <div className="bg-gradient-to-r from-cyan-50 to-blue-50 rounded-xl p-4 border border-cyan-200 md:col-span-2">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="w-10 h-10 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center">
+                      <CreditCard className="w-5 h-5 text-white" />
+                    </div>
+                    <span className="text-sm text-gray-600 font-medium">Account Number</span>
+                  </div>
+                  <p className="text-gray-800 font-bold ml-13">{user.accountNumber || "N/A"}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Set PIN Card */}
+            <div className="bg-white/90 backdrop-blur-lg rounded-3xl shadow-2xl p-6 md:p-8 border border-cyan-200">
+              <div className="flex items-center space-x-3 mb-6">
+                <div className="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center shadow-lg">
+                  <Shield className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-800">Security Settings</h3>
+                  <p className="text-gray-500 text-sm">Manage your transaction PIN</p>
+                </div>
+              </div>
+
+              {/* Message Display */}
+              {message && (
+                <div className={`mb-6 px-4 py-3 rounded-xl text-sm font-medium ${
+                  message.type === "success" 
+                    ? "bg-green-50 border-2 border-green-200 text-green-700" 
+                    : "bg-red-50 border-2 border-red-200 text-red-700"
+                }`}>
+                  {message.text}
+                </div>
+              )}
+
+              <form onSubmit={handlePinUpdate} className="space-y-6">
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-3">Set Transaction PIN</label>
+                  <div className="flex space-x-3 justify-center">
+                    {[0, 1, 2, 3].map((index) => (
+                      <input
+                        key={`pin-${index}`}
+                        type="password"
+                        ref={pinRefs[index]}
+                        value={pin ? pin[index] || "" : ""}
+                        onChange={(e) => handlePinDigitChange(index, e.target.value)}
+                        onKeyDown={(e) => handleKeyDown(index, e, false)}
+                        maxLength={1}
+                        className="w-14 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all"
+                        placeholder="•"
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-bold text-gray-700 mb-3">Confirm Transaction PIN</label>
+                  <div className="flex space-x-3 justify-center">
+                    {[0, 1, 2, 3].map((index) => (
+                      <input
+                        key={`confirm-pin-${index}`}
+                        type="password"
+                        ref={confirmPinRefs[index]}
+                        value={confirmPin ? confirmPin[index] || "" : ""}
+                        onChange={(e) => handleConfirmPinDigitChange(index, e.target.value)}
+                        onKeyDown={(e) => handleKeyDown(index, e, true)}
+                        maxLength={1}
+                        className="w-14 h-14 text-center text-2xl font-bold border-2 border-gray-200 rounded-xl focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 outline-none transition-all"
+                        placeholder="•"
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full bg-gradient-to-r from-cyan-500 to-blue-500 text-white py-4 rounded-xl font-bold text-lg hover:shadow-2xl hover:shadow-cyan-500/50 transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center space-x-2"
+                >
+                  {loading ? (
+                    <>
+                      <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      <span>Setting PIN...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Lock className="w-5 h-5" />
+                      <span>Set Transaction PIN</span>
+                    </>
+                  )}
+                </button>
+              </form>
+            </div>
+          </div>
+        </main>
+      </div>
+            {/* Logout Modal */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50">
+          <div className="bg-white/95 backdrop-blur-lg rounded-2xl shadow-2xl p-6 w-96 border border-cyan-200">
+            <h2 className="text-2xl font-bold text-gray-800 mb-4">Confirm Logout</h2>
+            <p className="text-gray-600 mb-6">Are you sure you want to log out?</p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-6 py-2.5 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 transition-all"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => {
+                  setShowModal(false);
+                  logoutUser();
+                }}
+                className="px-6 py-2.5 bg-gradient-to-r from-red-500 to-red-600 text-white rounded-xl font-semibold hover:shadow-lg hover:shadow-red-500/50 transition-all"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
         </div>
       )}
-
-      {/* Set Transaction PIN Form */}
-      <form onSubmit={handlePinUpdate} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Set Transaction PIN</label>
-          <div className="flex space-x-2 mt-1">
-            {[0, 1, 2, 3].map((index) => (
-              <input
-                key={`pin-${index}`}
-                type="password" // Mask PIN digits
-                ref={pinRefs[index]}
-                value={pin ? pin[index] || "" : ""}
-                onChange={(e) => handlePinDigitChange(index, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(index, e, false)}
-                maxLength={1}
-                className="w-12 h-12 border rounded-md text-center text-lg"
-                placeholder="-"
-              />
-            ))}
-          </div>
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-gray-700">Confirm Transaction PIN</label>
-          <div className="flex space-x-2 mt-1">
-            {[0, 1, 2, 3].map((index) => (
-              <input
-                key={`confirm-pin-${index}`}
-                type="password" // Mask Confirm PIN digits
-                ref={confirmPinRefs[index]}
-                value={confirmPin ? confirmPin[index] || "" : ""}
-                onChange={(e) => handleConfirmPinDigitChange(index, e.target.value)}
-                onKeyDown={(e) => handleKeyDown(index, e, true)}
-                maxLength={1}
-                className="w-12 h-12 border rounded-md text-center text-lg"
-                placeholder="-"
-              />
-            ))}
-          </div>
-        </div>
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 disabled:opacity-50"
-        >
-          {loading ? "Setting PIN..." : "Set PIN"}
-        </button>
-      </form>
     </div>
   );
 }
