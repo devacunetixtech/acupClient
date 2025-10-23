@@ -22,11 +22,11 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<Signin />} />
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/dashboard' element={user ? <Dashboard /> : <Signin/>} />
         <Route path="/profile" element={user ? <Profile /> : <Signin />}/>
         {/* <Route path="/" element={user ? <Dashboard /> : <SignUp />} /> Default route */}
         <Route path="/transfer" element={user ? <Transfer /> : <Signin />} />
-        <Route path="/transactionHistory" element={<TransactionHistory />} />
+        <Route path="/transactionHistory" element={user ? <TransactionHistory /> : <Signin />} />
         <Route path="*" element={<ErrorRoute />} /> {/* Catch-all route for undefined paths */}
 
       </Routes>
