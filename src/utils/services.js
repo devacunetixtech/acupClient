@@ -1,5 +1,6 @@
 // export const baseUrl = "http://localhost:3832/api"
-export const baseUrl = "https://acupapi.onrender.com/api"
+// export const baseUrl = "https://acupapi.onrender.com/api"
+export const baseUrl = "https://acup-api.vercel.app/api"
 export const postRequest = async (url, body) =>{
     
     const response = await fetch(url, {
