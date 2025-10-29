@@ -240,7 +240,7 @@ const Dashboard = () => {
               {loadingUser ? (
                 <div className="h-12 bg-white/20 rounded-lg w-64 animate-pulse"></div>
               ) : (
-                <h2 className="text-5xl font-bold mb-8">${user?.balance?.toFixed(2) || "0.00"}</h2>
+                <h2 className="text-5xl font-bold mb-8">₦{user?.balance?.toFixed(2) || "0.00"}</h2>
               )}
               <div className="flex items-center justify-between flex-wrap gap-4">
                 <div className="bg-white/20 backdrop-blur-sm rounded-xl p-4 flex items-center gap-3 flex-1 min-w-[250px]">

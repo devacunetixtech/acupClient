@@ -337,7 +337,7 @@ const Transfer = () => {
                 ) : balanceError ? (
                   <p className="text-red-200">{balanceError}</p>
                 ) : (
-                  <h2 className="text-4xl md:text-5xl font-bold">${localBalance?.toFixed(2) || "0.00"}</h2>
+                  <h2 className="text-4xl md:text-5xl font-bold">₦{localBalance?.toFixed(2) || "0.00"}</h2>
                 )}
               </div>
             </div>
