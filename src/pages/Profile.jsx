@@ -180,7 +180,7 @@ function Profile() {
               <span className="font-semibold">Transfer</span>
             </Link>
             <Link
-              to="/transactions"
+              to="/transactionHistory"
               className="w-full flex items-center space-x-3 px-4 py-3.5 rounded-xl transition-all transform hover:scale-105 hover:bg-white/20"
             >
               <Clock className="w-5 h-5" />
